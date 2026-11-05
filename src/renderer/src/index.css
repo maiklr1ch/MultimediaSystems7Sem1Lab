@@ -1,0 +1,157 @@
+@import 'tailwindcss';
+
+/*
+  Палітра: алюмінієва панель керування під чорною "сценою".
+  Акцент (marigold) використовується лише там, де щось відбувається:
+  кнопка Play, заповнена частина progress bar, цифри таймкоду.
+*/
+:root {
+  --deck: #e3e5e8;
+  --deck-raised: #f2f3f5;
+  --deck-line: #c3c8cf;
+  --ink: #1c1f23;
+  --ink-muted: #5d646e;
+  --stage: #000000;
+  --accent: #f2a30f;
+  --accent-strong: #d68c00;
+  --on-accent: #1c1f23;
+  --display: #14171b;
+  --display-ink: #f2a30f;
+  --display-muted: #7f8893;
+  --danger: #c4372b;
+  --key-highlight: rgb(255 255 255 / 0.55);
+  --key-shadow: rgb(0 0 0 / 0.14);
+  --display-edge: rgb(255 255 255 / 0.5);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --deck: #25282d;
+    --deck-raised: #30343a;
+    --deck-line: #41464e;
+    --ink: #e8eaed;
+    --ink-muted: #9aa2ad;
+    --display: #0d0f12;
+    --danger: #ff6b5e;
+    --key-highlight: rgb(255 255 255 / 0.06);
+    --key-shadow: rgb(0 0 0 / 0.45);
+    --display-edge: rgb(255 255 255 / 0.05);
+    color-scheme: dark;
+  }
+}
+
+@theme inline {
+  --color-deck: var(--deck);
+  --color-deck-raised: var(--deck-raised);
+  --color-deck-line: var(--deck-line);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-stage: var(--stage);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-on-accent: var(--on-accent);
+  --color-display: var(--display);
+  --color-display-ink: var(--display-ink);
+  --color-display-muted: var(--display-muted);
+  --color-danger: var(--danger);
+  --font-sans: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+/* Власні стилі — у шарах base/components, щоб утиліти Tailwind (text-ink тощо) мали пріоритет. */
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--deck);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    user-select: none;
+    overflow: hidden;
+  }
+
+  input,
+  button {
+    font: inherit;
+    color: inherit;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* Фізичні "клавіші" панелі: світла верхня грань + тінь знизу. */
+  .key {
+    background: var(--deck-raised);
+    border: 1px solid var(--deck-line);
+    color: var(--ink);
+    box-shadow:
+      inset 0 1px 0 var(--key-highlight),
+      0 1px 2px var(--key-shadow);
+    transition:
+      background-color 120ms,
+      transform 80ms;
+  }
+
+  .key:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--deck-raised) 92%, var(--ink));
+  }
+
+  .key:active:not(:disabled) {
+    transform: translateY(1px);
+    box-shadow: inset 0 1px 2px var(--key-shadow);
+  }
+
+  .key:disabled {
+    opacity: 0.45;
+    cursor: default;
+  }
+
+  .key-accent {
+    background: var(--accent);
+    border-color: var(--accent-strong);
+    color: var(--on-accent);
+  }
+
+  .key-accent:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--accent) 88%, white);
+  }
+
+  /* Вбудований у панель дисплей: "втиснутий" прямокутник. */
+  .display-window {
+    background: var(--display);
+    box-shadow:
+      inset 0 2px 6px rgb(0 0 0 / 0.6),
+      0 1px 0 var(--display-edge);
+  }
+
+  .spinner {
+    animation: spin 900ms linear infinite;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation-duration: 3s;
+  }
+
+  .key {
+    transition: none;
+  }
+}

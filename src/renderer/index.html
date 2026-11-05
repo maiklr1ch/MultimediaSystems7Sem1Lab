@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--
+      media:  — локальні файли через власний протокол main-процесу
+      blob:   — перетягнуті файли та MediaSource (hls.js)
+      http(s): — відтворення за URL
+    -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob:; media-src 'self' media: blob: http: https:; connect-src 'self' http: https: ws:; worker-src 'self' blob:"
+    />
+    <title>Медіапрогравач</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="./src/main.tsx"></script>
+  </body>
+</html>

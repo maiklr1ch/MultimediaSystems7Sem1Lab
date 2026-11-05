@@ -1,0 +1,27 @@
+# Пакування в інсталятор: npm run dist:win | dist:linux | dist:mac
+appId: ua.edu.lab.mediaplayer
+productName: Медіапрогравач
+directories:
+  output: dist
+  buildResources: build
+files:
+  - out/**
+  - package.json
+win:
+  target:
+    - nsis
+    - portable
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  artifactName: media-player-${version}-setup.${ext}
+portable:
+  artifactName: media-player-${version}-portable.${ext}
+linux:
+  target: AppImage
+  category: AudioVideo
+  artifactName: media-player-${version}.${ext}
+mac:
+  target: dmg
+  category: public.app-category.video
+  artifactName: media-player-${version}.${ext}
